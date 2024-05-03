@@ -2,9 +2,7 @@ from PIL import Image
 import os
 
 def get_dominant_color(image):
-    # Resize the image to speed up color extraction
     small_image = image.resize((100, 100))
-    # Get the dominant color
     dominant_color = small_image.getpixel((0, 0))
     return dominant_color
 
@@ -12,7 +10,6 @@ def find_watermark_location(image, watermark):
     width, height = image.size
     watermark_width, watermark_height = watermark.size
     
-    # Calculate the size of the watermark as 1/5th of the input image size
     scaled_width = width // 5
     scaled_height = watermark_height * scaled_width // watermark_width
     scaled_watermark = watermark.resize((scaled_width, scaled_height))
@@ -21,7 +18,6 @@ def find_watermark_location(image, watermark):
     
     target_color = image.getpixel((0, 0))
 
-    # Add spacing between the watermark and the edge of the image
     spacing = 10
 
     for x in range(spacing, width - scaled_width - spacing, 10):
@@ -37,7 +33,6 @@ def find_watermark_location(image, watermark):
             if color_diff < 100 and watermark_diff > 100:
                 return x, y, scaled_width, scaled_height
 
-    # If no suitable location is found, return default location with spacing
     return spacing, height - scaled_height - spacing, scaled_width, scaled_height
 
 def add_watermark(input_folder, output_folder, watermark_path):
@@ -64,6 +59,6 @@ def add_watermark(input_folder, output_folder, watermark_path):
 if __name__ == "__main__":
     input_folder = input("Enter the input folder path: ")
     output_folder = input("Enter the output folder name: ")
-    watermark_path = "watermark.png"  # Assuming watermark is in the same directory as the script
+    watermark_path = "watermark.png"  
 
     add_watermark(input_folder, output_folder, watermark_path)
